@@ -8,7 +8,7 @@
       type="text"
       placeholder="I need to..."
       class="p-2 outline-none rounded-md"
-      v-model="newtask"
+      v-model="taskObject.title"
     />
     <button class="text-sm bg-orange-400 p-3 w-24 rounded-md">Add</button>
   </form>
@@ -20,16 +20,17 @@ import { useTaskStore } from "../stores/TaskStore";
 
 const taskstore = useTaskStore();
 
-const newtask = ref();
+const taskObject = ref({
+  title: "",
+  isfav: false,
+  id: "",
+});
 
-const handlesubmit = () => {
-  if (newtask.value.length > 0) {
-    taskstore.addTask({
-      title: newtask.value,
-      isfav: false,
-      id: Math.floor(Math.random() * 10000),
-    });
-    newtask.value = "";
+const handlesubmit = async () => {
+  if (taskObject.value.title.trim()) {
+    taskstore.addTask(taskObject.value);
+
+    taskObject.value.title = "";
   }
 };
 </script>

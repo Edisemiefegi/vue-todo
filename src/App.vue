@@ -28,15 +28,15 @@
 
     <!-- task list -->
     <div class="flex flex-col items-center gap-5 py-10" v-if="filter === 'all'">
-      <p class="">You have {{ taskstore.totalcount }} tasks to do</p>
-      <div v-for="task in taskstore.tasks" :key="task.id">
+      <p class="">You have {{ totalCount }} tasks to do</p>
+      <div v-for="task in tasks" :key="task.id">
         <taskDetails :task="task" />
       </div>
     </div>
 
     <div class="flex flex-col items-center gap-5 py-10" v-if="filter === 'fav'">
-      <p>you have {{ taskstore.favcount }} fav tasks</p>
-      <div v-for="task in taskstore.fav" :key="task.id">
+      <p>you have {{ store.favcount }} fav tasks</p>
+      <div v-for="task in store.fav" :key="task.id">
         <taskDetails :task="task" />
       </div>
     </div>
@@ -47,9 +47,18 @@
 import { useTaskStore } from "./stores/TaskStore";
 import taskDetails from "./components/taskDetails.vue";
 import TaskForm from "./components/TaskForm.vue";
-import { ref } from "vue";
 
-const taskstore = useTaskStore();
+import { computed, onMounted, ref } from "vue";
+
+const store = useTaskStore();
+
+const totalCount = computed(() => store.totalcount);
+const tasks = computed(() => store.tasks);
+console.log(tasks.value, "taskvalues");
+
+onMounted(() => {
+  store.getTask();
+});
 
 const filter = ref("all");
 </script>
